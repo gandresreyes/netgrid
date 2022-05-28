@@ -1,0 +1,8 @@
+.space{
+    min-height: 70vh;
+}
+.pagination-lg .page-link {
+     padding: 5px 10px; 
+    font-size: 1.25rem;
+    line-height: 1.5;
+}

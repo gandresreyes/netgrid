@@ -1,0 +1,171 @@
+
+
+<div class="space mt-5">
+
+    <button (click)="clear()" type="button"  class="btn btn-outline-primary mb-3  w-25"  data-toggle="modal" data-target="#modalCreateUser">Crear Usuario</button>
+    <div class="card border-primary mb3">
+        <div class="card-header"> Usuarios</div>
+        <div class="card-body ">
+            <h4 class="card-title text-center">Listado de usuarios</h4>
+            <div class="form-inline d-flex justify-content-between ">
+                <nav aria-label="...">
+                    <ul class="pagination pagination-lg">
+                      <li (click)="cant(5)" class="page-item " [ngClass]="{'active':cantpag==5}" >
+                        <span class="page-link">5</span>
+                      </li>
+                      <li  (click)="cant(10)" class="page-item" [ngClass]="{'active':cantpag==10}"><span class="page-link" >10</span></li>
+                      <li  (click)="cant(20)" class="page-item" [ngClass]="{'active':cantpag==20}" ><span class="page-link" >20</span></li>
+                    </ul>
+                  </nav>
+                <input  [(ngModel)]="buscar"  class="form-control mr-sm-2 d-inline" type="search" placeholder="buscar" aria-label="Search">
+                
+            </div>
+            
+            
+           
+            <table class="table table-bordered table-striped my-4">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>user</th>
+                        <th>nombre</th>                      
+                        <th>apellido</th>
+                        <th>tipo identificacion</th>
+                        <th>nacimiento</th>
+                        <th>action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of filtroUser(buscar) | paginate: { itemsPerPage: cantpag, currentPage: p } " class="text-center">
+                        <td>{{user.id}}</td>
+                        <td>{{user.usuario}}</td>
+                        <td>{{user.nombre}}</td>
+                        <td>{{user.apellidos}}</td>
+                        <td>{{user.tipide}}</td>
+                        <td>{{user.f_nac}}</td>
+                        <td><span type="button" (click)="usuariofind(user)" class="btn btn-outline-primary mr-2 py-0 px-2"  data-toggle="modal" data-target="#modalupdateteUser">Edit</span>
+                            <span type="button" (click)="eliminarUser(user.id)" class="btn btn-outline-danger py-0 px-2" >X</span></td>
+
+                    </tr>
+                </tbody>
+    
+            </table>
+            <pagination-controls (pageChange)="p = $event"
+                previousLabel="Anterior"
+                nextLabel="Seguiente"
+                
+                
+                >
+            </pagination-controls>
+        </div>
+    </div>
+</div>
+
+<!--modal-->
+<div class="modal fade" id="modalCreateUser" tabindex="-1" aria-labelledby="modalCreateUser" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCreateUser">Crear Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <!--fomulario-->
+          <form (ngSubmit)="crearUser(false)" [formGroup]="formUser">
+            <div class="form-group">
+                <label for="usuer">Usuario</label>
+                <input type="text" class="form-control" id="usuario" formControlName="usuario" >
+            </div>
+            <div class="form-group">
+                <label for="usuer">nombre</label>
+                <input type="text" class="form-control" id="nombre" formControlName="nombre" >
+            </div>
+            <div class="form-group">
+                <label for="usuer">apellidos</label>
+                <input type="text" class="form-control" id="apellidos" formControlName="apellidos" >
+            </div>
+            <div class="form-group">
+                <label for="tipide">tipo indetificacion</label>
+                <select class="form-control" id="tipide" formControlName="tipide">
+                    <option value="" disabled selected></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                 
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="f_nac">fecha Nacimiento</label>
+                <input type="date" class="form-control" id="f_nac" formControlName="f_nac" >
+            </div>
+            <div class="form-group">
+                <label for="f_nac">password</label>
+                <input type="password" class="form-control" id="passw" formControlName="passw" >
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-outline-secondary mr-3 w-25" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-outline-primary w-25" >Crear</button>
+
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!--modal editar-->
+<div class="modal fade" id="modalupdateteUser" tabindex="-1" aria-labelledby="modalupdateteUser" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalupdateteUser">Editar Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <!--fomulario-->
+          <form (ngSubmit)="crearUser(true)" [formGroup]="formUser">            
+            <div class="form-group">
+                <label for="usuer">Usuario</label>
+                <input type="text" class="form-control" id="usuario" formControlName="usuario"  >
+            </div>
+            <div class="form-group">
+                <label for="usuer">Nombre</label>
+                <input type="text" class="form-control" id="nombre" formControlName="nombre"  >
+            </div>
+            <div class="form-group">
+                <label for="usuer">Apellidos</label>
+                <input type="text" class="form-control" id="apellidos" formControlName="apellidos"  >
+            </div>
+            <div class="form-group">
+                <label for="tipide">Tipo indetificacion</label>
+                <select class="form-control" id="tipide" formControlName="tipide" >
+                    <option value="" disabled selected></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                 
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="f_nac">Fecha Nacimiento</label>
+                <input type="date" class="form-control" id="f_nac" formControlName="f_nac"  >
+            </div>
+            <div class="form-group">
+                <label for="f_nac">Password</label>
+                <input  type="password"  readonly class="form-control-plaintext" id="passw" formControlName="passw"    >
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-outline-secondary mr-3 w-25" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-outline-primary w-25" >Actulizar</button>
+
+            </div>
+          </form>       
+      </div>
+    </div>
+  </div>
+
